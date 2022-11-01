@@ -7,9 +7,9 @@ describe('Parkos reeservations', () => {
     cy.contains('Las Vegas').click()
     
     // choose the date and time check in/out and click next step
-    cy.get('.vc-day-content').contains('22').click()
+    cy.get('.vc-day-content').eq(0).contains('22').click()
     cy.get('.legacy-time-picker-desktop__item').contains('6:00 AM').click()
-    cy.get('.vc-day-content').contains('23').click()
+    cy.get('.vc-day-content').eq(1).contains('23').click()
     cy.get('.legacy-time-picker-desktop__item').contains('8:00 PM').click()
    
     cy.contains('Search parking spots').click()
