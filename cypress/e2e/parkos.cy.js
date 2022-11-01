@@ -35,9 +35,6 @@ describe('Parkos reeservations', () => {
     cy.get('input#AVParkos').focus().click()
     cy.get('input#ExtraControl').focus().click()
 
-    //cy.get('#reservationSubmit').focus().click()
-    // cy.contains('Search parking spots').click()
-                   
-    
+    // cy.get('#reservationSubmit').click()
   })
 });
