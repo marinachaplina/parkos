@@ -1,1 +1,3 @@
 node_modules
+e2e/spec.cy.js
+e2e/test1.cy.js

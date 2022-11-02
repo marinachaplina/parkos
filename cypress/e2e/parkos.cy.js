@@ -1,40 +1,55 @@
-describe('Parkos reeservations', () => {
+import ReservationDetailsPage from '../support/Pages/ReservationDetailsPage';
+import ParkingAvailablePage from '../support/Pages/ParkingAvailablePage';
+import HomePage from '../support/Pages/HomePage';
+
+describe('Parkos reservations', () => {
+  
+  const Reserv = new ReservationDetailsPage();
+  const Available = new ParkingAvailablePage();
+  const Home = new HomePage();
+
   it('passes', () => {
+
     cy.visit('https://parkos.com/');
+
+    // find the content 'Select airport' -> choose 'Las Vegas' and click
+    Home.getAirport();
+    cy.contains('Las Vegas').click();
     
-    // find the content 'Select airport' -> Hollywood Burbank Airport and click
-    cy.get('.text-ellipsis').contains('Select airport').click()
-    cy.contains('Las Vegas').click()
-    
-    // choose the date and time check in/out and click next step
-    cy.get('.vc-day-content').contains('22').click()
-    cy.get('.legacy-time-picker-desktop__item').contains('6:00 AM').click()
-    cy.get('.vc-day-content').contains('23').click()
-    cy.get('.legacy-time-picker-desktop__item').contains('8:00 PM').click()
+    // choose the date and time check in/out and click the 'Search' button
+    Home.getDate().contains('22').click();
+    Home.getTime().contains('6:00 AM').click();
+    Home.getDate().contains('23').click();
+    Home.getTime().contains('8:00 PM').click();
    
-    cy.contains('Search parking spots').click()
+    Home.clickSearchButton(); 
 
-    // check if there is an available option and click next step
-    cy.get('.text-base').should('not.include.text', '0 available')
-    cy.get('.primary-btn').contains('Proceed to booking').click()
+    // check if there is an available option and click the 'Proceed' button
+    Available.checkform();
+    Available.clickProceedButton();
 
-    // check if Your travel details form is opened and input tha datas
-    cy.get('h3').should('include.text', 'Your travel details')
+    // check if 'Your travel details' form is opened and type the reservation details
+    Reserv.checkform();
 
-    cy.get('input#inputDepartureFlightnr').focus().type('Fl345')
-    cy.get('input#inputReturnFlightnr').focus().type('Fl346')
-    cy.get('input#inputName').focus().type('Marina')
-    cy.get('input#inputEmail').focus().type('Marina@test.com')
-    cy.get('input#inputEmail2').focus().type('Marina@test.com')
-    cy.get('input#inputPhone').focus().type('12345678')
-    cy.get('select#inputPersons').select('3')
-    cy.get('input#inputCar').focus().type('Volkswagen Golf7')
-    cy.get('input#inputSign').focus().type('KL1234H')
-    cy.get('input#base-package').focus().click()
-    cy.get('input#radio_payment_option_visa').focus().click()
-    cy.get('input#AVParkos').focus().click()
-    cy.get('input#ExtraControl').focus().click()
+    Reserv.typeDepartureFlightnr('Fl345');
+    Reserv.typeReturnFlightnr('Fl346');
+    Reserv.typeName('Marina');
+    Reserv.typeEmail('Marina@test.com');
+    Reserv.typeEmail2('Marina@test.com');
+    Reserv.typePhone('12345678');
+    Reserv.selectPersons('2');
+    Reserv.typeCar('Volkswagen Golf7');
+    Reserv.typeSign('KL1234H');
 
+    // choose the Package 'base', 'standard' or 'premium'
+    Reserv.choosePackage('base');
+    
+    // choose the Payment option 'Credit/Debit Card', 'Visa', 'Mastercard', 'American Express' or 'PayPal'
+    Reserv.choosePayment('Visa');
+
+    Reserv.clickAgree();
+    Reserv.clickChecked();
+    
     // cy.get('#reservationSubmit').click()
   })
 });
