@@ -15,7 +15,7 @@ describe('Parkos reservations', () => {
     // find the content 'Select airport' -> choose 'Las Vegas' and click
     Home.getAirport();
     cy.contains('Las Vegas').click();
-    
+
     // choose the date and time check in/out and click the 'Search' button
     Home.getDate().contains('22').click();
     Home.getTime().contains('6:00 AM').click();
