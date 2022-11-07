@@ -1,19 +1,27 @@
 class HomePage {
 
-    getAirport() {
-        return cy.get('.text-ellipsis').contains('Select airport').click();      
+    choosePeriod(airport, startDate, startTime, endDate, endTime)
+    {
+        cy.get(this.getFormSelector()).contains('Select airport').click();
+        cy.contains(airport).click();
+        cy.get(this.getDateSelector()).contains(startDate).click();
+        cy.get(this.getTimeSelector()).contains(startTime).click(); 
+        cy.get(this.getDateSelector()).contains(endDate).click();
+        cy.get(this.getTimeSelector()).contains(endTime).click(); 
+        cy.get(this.getFormSelector()).contains('Search parking spots').click();
     }
 
-    getDate() {
-        return cy.get('.vc-day-content');      
+    getFormSelector()
+    {
+        return '.text-ellipsis';
     }
 
-    getTime() {
-        return cy.get('.legacy-time-picker-desktop__item');      
+    getDateSelector() {
+        return '.vc-day-content';      
     }
-    
-    clickSearchButton() {
-        return cy.get('.text-ellipsis').contains('Search parking spots').click();
+
+    getTimeSelector() {
+        return '.legacy-time-picker-desktop__item';      
     }
 
 }
