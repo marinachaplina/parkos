@@ -1,13 +1,13 @@
 class HomePage {
 
-    choosePeriod(airport, startDate, startTime, endDate, endTime)
+    choosePeriod(airport, start, end)
     {
         cy.get(this.getFormSelector()).contains('Select airport').click();
         cy.contains(airport).click();
-        cy.get(this.getDateSelector()).contains(startDate).click();
-        cy.get(this.getTimeSelector()).contains(startTime).click(); 
-        cy.get(this.getDateSelector()).contains(endDate).click();
-        cy.get(this.getTimeSelector()).contains(endTime).click(); 
+        cy.get(this.getDateSelector()).contains(start.getDate()).click();
+        cy.get(this.getTimeSelector()).contains(start.toLocaleTimeString('en-US',{hour:'numeric',minute:'numeric',hour12:true})).click(); 
+        cy.get(this.getDateSelector()).contains(end.getDate()).click();
+        cy.get(this.getTimeSelector()).contains(end.toLocaleTimeString('en-US',{hour:'numeric',minute:'numeric',hour12:true})).click(); 
         cy.get(this.getFormSelector()).contains('Search parking spots').click();
     }
 
