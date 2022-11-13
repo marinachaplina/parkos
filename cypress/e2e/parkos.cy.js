@@ -7,9 +7,11 @@ describe('Parkos reservations', () => {
   const Home = new HomePage();
 
   const airport = 'Las Vegas';
+  const airportUrl = 'las-vegas-airport-parking';
   const startDate = new Date('November 28, 2022 18:15:00');
-  const PeriodDays = 2;
-  const PeriodHours = -7;
+  const PeriodDays = 7;
+  const PeriodHours = -10;
+
   let endDate = structuredClone(startDate);
   endDate.setDate(startDate.getDate() + PeriodDays);
   endDate.setHours(startDate.getHours() + PeriodHours);
@@ -19,14 +21,19 @@ describe('Parkos reservations', () => {
     cy.viewport(1920, 1080);
     
     // OPTION 1 - Open the Home Page - Select Airport, Date and Time
-    // cy.visit('https://parkos.com/');
-    // Home.choosePeriod(airport, startDate, endDate);
+    //  cy.visit('https://parkos.com/');
+    //  Home.choosePeriod(airport, startDate, endDate);
     
     // OPTION 2 - Enter data via URL
-    // cy.visit('https://parkos.com/las-vegas-airport-parking/search/?location=las-vegas-airport-parking&arrivalTime=6%3A00&departureTime=20%3A00&arrival=2022-11-28&departure=2022-11-29&sort_f=price&sort_w=asc&version=5');
-    cy.visit('https://parkos.com/las-vegas-airport-parking/search/?location=las-vegas-airport-parking&arrivalTime=' + startDate.getHours() + '%3A' + startDate.getMinutes() + '&departureTime=' + endDate.getHours() + '%3A' + endDate.getMinutes() + '&arrival=' + startDate.getFullYear() + '-' + (startDate.getMonth() + 1) + '-' + startDate.getDate() + '&departure=' + endDate.getFullYear() + '-' + (endDate.getMonth() + 1) + '-' + endDate.getDate() +  '&sort_f=price&sort_w=asc&version=5');
+    cy.visit('https://parkos.com/' + airportUrl + '/search/?location=' + airportUrl 
+      + '&arrivalTime=' + startDate.getHours() + '%3A' + startDate.getMinutes() 
+      + '&departureTime=' + endDate.getHours() + '%3A' + endDate.getMinutes() 
+      + '&arrival=' + startDate.getFullYear() + '-' + startDate.toLocaleString('en-US', {'month':'2-digit'}) + '-' + startDate.toLocaleString('en-US', {'day': '2-digit'})
+      + '&departure=' + endDate.getFullYear() + '-' + endDate.toLocaleString('en-US', {'month':'2-digit'}) + '-' + endDate.toLocaleString('en-US', {'day': '2-digit'}) 
+      + '&sort_f=price&sort_w=asc&version=5');
     
     // Page2 - Available parking places
+    cy.wait(2000);
     cy.get('.text-base').should('not.include.text', '0 available');
     cy.get('.primary-btn').contains('Proceed to booking').click();
 
