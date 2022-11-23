@@ -8,14 +8,19 @@ describe('Parkos reservations', () => {
 
   const airport = 'Las Vegas';
   const airportUrl = 'las-vegas-airport-parking';
-  const startDate = new Date('November 28, 2022 18:15:00');
-  const PeriodDays = 7;
-  const PeriodHours = -10;
+  let startDate;
+  let endDate;
+  
+  //Use the cy.fixture() method to pull data from fixture file
+  before(function () {
+    cy.fixture('jsonData').then(function(data) {
+      startDate = new Date(data.StartDate);
+      endDate = structuredClone(startDate);
+      endDate.setDate(startDate.getDate() + data.PeriodDays);
+      endDate.setHours(startDate.getHours() + data.PeriodHours);
+    })
+  })
 
-  let endDate = structuredClone(startDate);
-  endDate.setDate(startDate.getDate() + PeriodDays);
-  endDate.setHours(startDate.getHours() + PeriodHours);
-   
   it('passes', () => {
 
     cy.viewport(1920, 1080);
@@ -26,12 +31,15 @@ describe('Parkos reservations', () => {
     
     // OPTION 2 - Enter data via URL
     cy.visit('https://parkos.com/' + airportUrl + '/search/?location=' + airportUrl 
-      + '&arrivalTime=' + startDate.getHours() + '%3A' + startDate.getMinutes() 
-      + '&departureTime=' + endDate.getHours() + '%3A' + endDate.getMinutes() 
+      + '&arrivalTime=' + startDate.getHours() + '%3A' + startDate.toLocaleString('en-US', {'hour': '2-digit', 'minute':'2-digit', hour12:false}).split(':')[1] 
+      + '&departureTime=' + endDate.getHours() + '%3A' + endDate.toLocaleString('en-US', {'second': '2-digit', 'minute':'2-digit'}).split(':')[0] 
       + '&arrival=' + startDate.getFullYear() + '-' + startDate.toLocaleString('en-US', {'month':'2-digit'}) + '-' + startDate.toLocaleString('en-US', {'day': '2-digit'})
       + '&departure=' + endDate.getFullYear() + '-' + endDate.toLocaleString('en-US', {'month':'2-digit'}) + '-' + endDate.toLocaleString('en-US', {'day': '2-digit'}) 
       + '&sort_f=price&sort_w=asc&version=5');
     
+      console.log(startDate.toLocaleString('en-US', {'minute':'2-digit'}));
+      console.log(startDate.toLocaleString('en-US', {'hour': '2-digit', 'minute':'2-digit', hour12:false}).split(':')[1]);
+
     // Page2 - Available parking places
     cy.wait(2000);
     cy.get('.text-base').should('not.include.text', '0 available');
