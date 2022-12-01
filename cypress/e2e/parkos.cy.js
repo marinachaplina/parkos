@@ -1,6 +1,7 @@
 import ReservationDetailsPage from '../support/Pages/ReservationDetailsPage';
 import HomePage from '../support/Pages/HomePage';
 import date from 'date-and-time';
+import { faker } from '@faker-js/faker';
 
 describe('Parkos reservations', () => {
   
@@ -11,11 +12,11 @@ describe('Parkos reservations', () => {
   const airportUrl = 'las-vegas-airport-parking';
   let startDate;
   let PeriodDays = 7;
-  let PeriodHours = 2;
+  let PeriodHours = 0;
   let endDate;
   let user;
-
-  // Set startDate = now + 14 days and round minutes
+  
+  // Set startDate = now + XX days and round minutes
   const now = new Date();
   startDate = date.addDays(now, +14);
   
@@ -34,6 +35,11 @@ describe('Parkos reservations', () => {
   endDate = structuredClone(startDate);
   endDate.setDate(startDate.getDate() + PeriodDays);
   endDate.setHours(startDate.getHours() + PeriodHours);
+
+  // Use random User Name, e-mail and phone via @faker
+  const randomName = faker.name.firstName() + ' ' + faker.name.lastName();
+  const randomEmail = faker.internet.email();
+  const randomPhone = faker.phone.number('501-###-###');
 
   // Use the cy.fixture() method to pull User Info from fixture file
   before(function () {
@@ -57,7 +63,7 @@ describe('Parkos reservations', () => {
       + '&arrival=' + startDate.getFullYear() + '-' + startDate.toLocaleString('en-US', {'month':'2-digit'}) + '-' + startDate.toLocaleString('en-US', {'day': '2-digit'})
       + '&departure=' + endDate.getFullYear() + '-' + endDate.toLocaleString('en-US', {'month':'2-digit'}) + '-' + endDate.toLocaleString('en-US', {'day': '2-digit'}) 
       + '&sort_f=price&sort_w=asc&version=5');
-    
+
     // Page2 - Available parking places
     cy.wait(2000);
     cy.get('.text-base').should('not.include.text', '0 available');
@@ -67,7 +73,7 @@ describe('Parkos reservations', () => {
     cy.get('h3').should('include.text', 'Your travel details');
     cy.wait(2000);
     
-    Reserv.fillForm(user.DepartureFlightnr, user.ReturnFlightnr, user.Name, user.Email, user.Email2, user.Phone, user.Persons, user.Car, user.Sign, user.Package, user.Payment);
+    Reserv.fillForm(user.DepartureFlightnr, user.ReturnFlightnr, randomName, randomEmail, randomEmail, randomPhone, user.Persons, user.Car, user.Sign, user.Package, user.Payment);
 
     Reserv.clickAgree();
     Reserv.clickChecked();
