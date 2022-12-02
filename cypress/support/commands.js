@@ -1,25 +1,18 @@
-// ***********************************************
-// This example commands.js shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+import { faker } from '@faker-js/faker';
+
+Cypress.Commands.add('generateFixture', () => {
+   
+    cy.writeFile('cypress/fixtures/userInfo.json', {
+        "DepartureFlightnr": faker.helpers.replaceSymbols('??###'), 
+        "ReturnFlightnr": faker.helpers.replaceSymbols('??###'), 
+        "Name": faker.name.fullName(),
+        "Email": faker.internet.email(),
+        "Email2": "Email",
+        "Phone": faker.phone.number('###-###-###'),
+        "Persons": faker.helpers.arrayElement(['1', '2', '3', '4', '5', '6', '7', '8']),
+        "Car": faker.vehicle.vehicle(),
+        "Sign": faker.vehicle.vrm(),
+        "Package": faker.helpers.arrayElement(['base', 'standard', 'premium']),
+        "Payment": faker.helpers.arrayElement(['Visa', 'Mastercard', 'American Express', 'PayPal'])
+    })
+  })

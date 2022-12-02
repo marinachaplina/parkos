@@ -1,7 +1,6 @@
 import ReservationDetailsPage from '../support/Pages/ReservationDetailsPage';
 import HomePage from '../support/Pages/HomePage';
 import date from 'date-and-time';
-import { faker } from '@faker-js/faker';
 
 describe('Parkos reservations', () => {
   
@@ -36,13 +35,9 @@ describe('Parkos reservations', () => {
   endDate.setDate(startDate.getDate() + PeriodDays);
   endDate.setHours(startDate.getHours() + PeriodHours);
 
-  // Use random User Name, e-mail and phone via @faker
-  const randomName = faker.name.firstName() + ' ' + faker.name.lastName();
-  const randomEmail = faker.internet.email();
-  const randomPhone = faker.phone.number('501-###-###');
-
-  // Use the cy.fixture() method to pull User Info from fixture file
+  // Create dynamic fixture .json with random @faker datas
   before(function () {
+    cy.generateFixture();
     cy.fixture('userInfo').then(function (userInfo) {
       user = userInfo;      
     })
@@ -73,7 +68,7 @@ describe('Parkos reservations', () => {
     cy.get('h3').should('include.text', 'Your travel details');
     cy.wait(2000);
     
-    Reserv.fillForm(user.DepartureFlightnr, user.ReturnFlightnr, randomName, randomEmail, randomEmail, randomPhone, user.Persons, user.Car, user.Sign, user.Package, user.Payment);
+    Reserv.fillForm(user.DepartureFlightnr, user.ReturnFlightnr, user.Name, user.Email, user.Email, user.Phone, user.Persons, user.Car, user.Sign, user.Package, user.Payment);
 
     Reserv.clickAgree();
     Reserv.clickChecked();
