@@ -17,7 +17,7 @@ describe('Parkos reservations', () => {
   
   // Set startDate = now + XX days and round minutes
   const now = new Date();
-  startDate = date.addDays(now, +14);
+  startDate = date.addDays(now, 60);
   
   let minutes = startDate.getMinutes();
   if (minutes < 15) {
